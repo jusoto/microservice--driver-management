@@ -34,9 +34,9 @@ public class CarController {
     @PutMapping("cars/update/{id}")
     public @ResponseBody Car updateCar(@PathVariable("id") Integer id, @RequestBody Car updatedCar){
         Car car = repository.findByIdcar(id);
-        car.setIdstate(updatedCar.getIdstate() != null ? updatedCar.getIdstate() : car.getIdstate());
-        car.setIddriver(updatedCar.getIddriver() != null ? updatedCar.getIddriver()  : car.getIddriver());
-        car.setIdmodel(updatedCar.getIdmodel() != null ? updatedCar.getIdmodel() : car.getIdmodel());
+        car.setState(updatedCar.getState() != null ? updatedCar.getState() : car.getState());
+        car.setDriver(updatedCar.getDriver() != null ? updatedCar.getDriver()  : car.getDriver());
+        car.setCarModel(updatedCar.getCarModel() != null ? updatedCar.getCarModel() : car.getCarModel());
         car.setPlate(updatedCar.getPlate() != null ? updatedCar.getPlate() : car.getPlate());
         car.setImageUri(updatedCar.getImageUri() != null ? updatedCar.getImageUri() : car.getImageUri());
         car.setYear(updatedCar.getYear() != null ? updatedCar.getYear() : car.getYear());

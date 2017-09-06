@@ -1,11 +1,14 @@
 package org.aitesting.microservices.drivermanagement.models;
 
-import javax.persistence.Column;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,24 +17,32 @@ public class Car {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="idcar")
 	private Integer idcar;
-	private Integer idstate;
-	private Integer iddriver;
-	private Integer idmodel;
+    @ManyToOne
+    @JoinColumn(name = "idstate")
+	private State state;
+    @ManyToOne
+    @JoinColumn(name = "iddriver")
+	private Driver driver;
+    @ManyToOne
+    @JoinColumn(name = "idcar_model")
+	private CarModel carModel;
 	private String plate;
 	private String imageUri;
 	private Integer year;
+
+    @OneToMany
+    private Set<HasDriverState> hasDriverStates;
 	
 	public Car() {
 		
 	}
 
-	public Car(Integer idstate, Integer iddriver, Integer idmodel, String plate, String imageUri, Integer year) {
+	public Car(State state, Driver driver, CarModel carModel, String plate, String imageUri, Integer year) {
 		super();
-		this.idstate = idstate;
-		this.iddriver = iddriver;
-		this.idmodel = idmodel;
+		this.state = state;
+		this.driver = driver;
+		this.carModel = carModel;
 		this.plate = plate;
 		this.imageUri = imageUri;
 		this.year = year;
@@ -45,28 +56,29 @@ public class Car {
 		this.idcar = idcar;
 	}
 
-	public Integer getIdstate() {
-		return idstate;
+
+	public State getState() {
+		return state;
 	}
 
-	public void setIdstate(Integer idstate) {
-		this.idstate = idstate;
+	public void setState(State state) {
+		this.state = state;
 	}
 
-	public Integer getIddriver() {
-		return iddriver;
+	public Driver getDriver() {
+		return driver;
 	}
 
-	public void setIddriver(Integer iddriver) {
-		this.iddriver = iddriver;
+	public void setDriver(Driver driver) {
+		this.driver = driver;
 	}
 
-	public Integer getIdmodel() {
-		return idmodel;
+	public CarModel getCarModel() {
+		return carModel;
 	}
 
-	public void setIdmodel(Integer idmodel) {
-		this.idmodel = idmodel;
+	public void setCarModel(CarModel carModel) {
+		this.carModel = carModel;
 	}
 
 	public String getPlate() {
@@ -91,6 +103,11 @@ public class Car {
 
 	public void setYear(Integer year) {
 		this.year = year;
+	}
+
+	@Override
+	public String toString() {
+		return plate;
 	}
 
 }

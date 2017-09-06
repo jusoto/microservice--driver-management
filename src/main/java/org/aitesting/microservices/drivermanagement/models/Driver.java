@@ -1,11 +1,17 @@
 package org.aitesting.microservices.drivermanagement.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,28 +22,38 @@ public class Driver {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="iddriver")
 	private Integer iddriver;
-	private Integer idcity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idcity")
+	private City city;
 	private String fname;
 	private String lname;
 	private String username;
+	private String password;
 	private String email;
 	private Double lastLocationLat;
 	private Double lastLocationLon;
 	private String address;
 	private String phone;
 	private Integer active; // 1 = active, 0 = inactive
+
+    @OneToMany
+    private Set<Car> cars;
+
+    @OneToMany
+    private Set<HasDriverState> hasDriverStates;
 	
 	public Driver() {
 		
 	}
 
-	public Driver(Integer idcity, String fname, String lname, String username, String email,
+	public Driver(City city, String fname, String lname, String username, String password, String email,
 			Double lastLocationLat, Double lastLocationLon, String address, String phone, Integer active) {
 		super();
-		this.idcity = idcity;
+		this.city = city;
 		this.fname = fname;
 		this.lname = lname;
 		this.username = username;
+		this.password = password;
 		this.email = email;
 		this.lastLocationLat = lastLocationLat;
 		this.lastLocationLon = lastLocationLon;
@@ -54,12 +70,12 @@ public class Driver {
 		this.iddriver = iddriver;
 	}
 
-	public Integer getIdcity() {
-		return idcity;
+	public City getCity() {
+		return city;
 	}
 
-	public void setIdcity(Integer idcity) {
-		this.idcity = idcity;
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	public String getFname() {
@@ -84,6 +100,14 @@ public class Driver {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -133,7 +157,10 @@ public class Driver {
 	public void setActive(Integer active) {
 		this.active = active;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return fname + " " + lname;
+	}
 
 }

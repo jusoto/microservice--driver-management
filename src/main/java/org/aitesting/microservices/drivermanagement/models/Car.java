@@ -2,7 +2,9 @@ package org.aitesting.microservices.drivermanagement.models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="car")
 public class Car {
@@ -18,20 +22,20 @@ public class Car {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer idcar;
-    @ManyToOne
-    @JoinColumn(name = "idstate")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idstate", referencedColumnName = "idstate")
 	private State state;
-    @ManyToOne
-    @JoinColumn(name = "iddriver")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "iddriver", referencedColumnName = "iddriver")
 	private Driver driver;
-    @ManyToOne
-    @JoinColumn(name = "idcar_model")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idcar_model", referencedColumnName = "idcar_model")
 	private CarModel carModel;
 	private String plate;
 	private String imageUri;
 	private Integer year;
 
-    @OneToMany
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<HasDriverState> hasDriverStates;
 	
 	public Car() {
@@ -104,6 +108,31 @@ public class Car {
 	public void setYear(Integer year) {
 		this.year = year;
 	}
+
+	@JsonIgnore
+    public Set<HasDriverState> getHasDriverStates() {
+		return hasDriverStates;
+	}
+
+	@Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idcar != null ? idcar.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Car)) {
+            return false;
+        }
+        Car other = (Car) object;
+        if ((this.idcar == null && other.idcar != null) || (this.idcar != null && !this.idcar.equals(other.idcar))) {
+            return false;
+        }
+        return true;
+    }
 
 	@Override
 	public String toString() {

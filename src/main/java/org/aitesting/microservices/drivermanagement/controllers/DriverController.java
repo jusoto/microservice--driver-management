@@ -14,30 +14,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("api")
+@RequestMapping("api/drivers")
 public class DriverController {
 	
     @Autowired
     private DriverRepository driverRepository;
 
-    @GetMapping("drivers")
+    @GetMapping("/")
     public @ResponseBody Iterable<Driver> getDrivers(){
     	// 1="Active", 0="Not Active"
         return  driverRepository.findByActive(1);
     }
+    
+    @GetMapping("/nearlocation")
+    public @ResponseBody Iterable<Driver> getDriverByLocation(@RequestParam Double latitude, @RequestParam Double longitude){
+    	System.out.println("******************************* latitude: "+latitude+"*******************************");
+        return driverRepository.findByLastLocationLat(latitude);
+    }
 
-    @GetMapping("drivers/{id}")
+    @GetMapping("/{id}")
     public @ResponseBody Driver getDriver(@PathVariable("id") Integer id){
         return driverRepository.findByIddriver(id);
     }
 
-    @PostMapping("drivers/add")
+    @PostMapping("/add")
     public @ResponseBody Driver addDriver(@RequestBody Driver driver){
         driverRepository.save(driver);
         return driver;
     }
 
-    @PutMapping("drivers/update/{id}")
+    @PutMapping("/update/{id}")
     public @ResponseBody Driver updateDriver(@PathVariable("id") Integer id, @RequestBody Driver updatedDriver){
         Driver driver = driverRepository.findByIddriver(id);
         driver.setFname(updatedDriver.getFname() != null ? updatedDriver.getFname() : driver.getFname());
@@ -54,7 +60,7 @@ public class DriverController {
         return driver;
     }
     
-    @PutMapping("drivers/update/location/{id}")
+    @PutMapping("/update/location/{id}")
     public @ResponseBody Driver updateDriverLocation(@PathVariable("id") Integer id, @RequestParam Double lat, @RequestParam Double lon){
         Driver driver = driverRepository.findByIddriver(id);
         driver.setLastLocationLat(lat != null ? lat : driver.getLastLocationLat());

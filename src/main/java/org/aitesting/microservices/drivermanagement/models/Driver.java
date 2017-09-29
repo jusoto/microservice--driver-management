@@ -2,28 +2,31 @@ package org.aitesting.microservices.drivermanagement.models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
+//@NamedQuery(name = "Driver.findByNearLocation", query = "SELECT d.* FROM Driver d WHERE last_location_lat>=(?1-5.0) AND last_location_lat<=(?1+5.0) AND last_location_lon>=(?2-5.0) AND last_location_lon<=(?2+5.0)")
 @Table(name="driver")
-public class Driver {
+public class Driver{
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="iddriver")
 	private Integer iddriver;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idcity")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idcity", referencedColumnName = "idcity")
 	private City city;
 	private String fname;
 	private String lname;
@@ -36,10 +39,10 @@ public class Driver {
 	private String phone;
 	private Integer active; // 1 = active, 0 = inactive
 
-    @OneToMany
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Car> cars;
 
-    @OneToMany
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<HasDriverState> hasDriverStates;
 	
 	public Driver() {
@@ -158,9 +161,44 @@ public class Driver {
 		this.active = active;
 	}
 
+	@JsonIgnore
+    public Set<Car> getCars() {
+		return cars;
+	}
+
+	@JsonIgnore
+	public Set<HasDriverState> getHasDriverStates() {
+		return hasDriverStates;
+	}
+
+	@Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (iddriver != null ? iddriver.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Driver)) {
+            return false;
+        }
+        Driver other = (Driver) object;
+        if ((this.iddriver == null && other.iddriver != null) || (this.iddriver != null && !this.iddriver.equals(other.iddriver))) {
+            return false;
+        }
+        return true;
+    }
+
 	@Override
 	public String toString() {
 		return fname + " " + lname;
+	}
+
+	public void setSummary(String summary) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

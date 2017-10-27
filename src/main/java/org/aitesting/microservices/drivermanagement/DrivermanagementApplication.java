@@ -22,7 +22,8 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 
 @SpringBootApplication
 @EnableRabbit
-public class DriverManagementApplication implements RabbitListenerConfigurer {
+//@EnableRedisHttpSession
+public class DriverManagementApplication /*extends WebSecurityConfigurerAdapter*/ implements RabbitListenerConfigurer {
 
 	public static final String EXCHANGE_NAME = "appExchange";
 	public static final String QUEUE_GENERIC_NAME = "genericQueue";
@@ -112,4 +113,11 @@ public class DriverManagementApplication implements RabbitListenerConfigurer {
 	public static void main(String[] args) {
 		SpringApplication.run(DriverManagementApplication.class, args);
 	}
+
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//	    http.httpBasic().disable();
+//	    http.authorizeRequests().anyRequest().authenticated();
+//	}
+	
 }

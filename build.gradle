@@ -53,11 +53,18 @@ ext {
 
 
 dependencies {
+	//compile 'org.springframework.cloud:spring-cloud-starter-eureka'
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-amqp'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-data-rest'
     compile 'org.springframework.boot:spring-boot-starter-logging'
+    
+    // Security between Microservices through API
+	compile 'org.springframework.boot:spring-boot-starter-tomcat'
+	//compile 'org.springframework.boot:spring-boot-starter-security'
+	//compile 'org.springframework.boot:spring-boot-starter-data-redis:1.5.7.RELEASE'
+	//compile 'org.springframework.session:spring-session'
 
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
@@ -71,6 +78,8 @@ dependencies {
     compileOnly 'com.google.appengine:appengine-api-1.0-sdk:1.9.54'
     compile 'com.google.guava:guava:23.0-android' // Note, v23.0-android is the last JDK7 supporting release of Guava
                                                   // but still don't use google-maps-services-java on android
+    compile 'redis.clients:jedis'
+    compile 'org.apache.commons:commons-pool2'
     
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

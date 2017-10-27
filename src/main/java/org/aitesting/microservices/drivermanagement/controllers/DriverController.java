@@ -26,24 +26,24 @@ public class DriverController {
         return  driverRepository.findByActive(1);
     }
     
-    @GetMapping("/nearlocation")
+    @GetMapping("nearlocation")
     public @ResponseBody Iterable<Driver> getDriverByLocation(@RequestParam Double latitude, @RequestParam Double longitude){
     	System.out.println("******************************* latitude: "+latitude+"*******************************");
         return driverRepository.findByLastLocationLat(latitude);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public @ResponseBody Driver getDriver(@PathVariable("id") Integer id){
         return driverRepository.findByIddriver(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping("add")
     public @ResponseBody Driver addDriver(@RequestBody Driver driver){
         driverRepository.save(driver);
         return driver;
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("update/{id}")
     public @ResponseBody Driver updateDriver(@PathVariable("id") Integer id, @RequestBody Driver updatedDriver){
         Driver driver = driverRepository.findByIddriver(id);
         driver.setFname(updatedDriver.getFname() != null ? updatedDriver.getFname() : driver.getFname());
@@ -60,7 +60,7 @@ public class DriverController {
         return driver;
     }
     
-    @PutMapping("/update/location/{id}")
+    @PutMapping("update/location/{id}")
     public @ResponseBody Driver updateDriverLocation(@PathVariable("id") Integer id, @RequestParam Double lat, @RequestParam Double lon){
         Driver driver = driverRepository.findByIddriver(id);
         driver.setLastLocationLat(lat != null ? lat : driver.getLastLocationLat());
@@ -70,7 +70,7 @@ public class DriverController {
         return driver;
     }
 
-    @GetMapping("drivers/delete/{id}")
+    @GetMapping("delete/{id}")
     public @ResponseBody void deleteDriver(@PathVariable("id") String id){
         driverRepository.delete(id);
     }

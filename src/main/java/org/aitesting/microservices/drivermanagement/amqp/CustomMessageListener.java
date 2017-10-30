@@ -1,6 +1,6 @@
 package org.aitesting.microservices.drivermanagement.amqp;
 
-import org.aitesting.microservices.drivermanagement.DriverManagementApplication;
+import org.aitesting.microservices.drivermanagement.DrivermanagementApplication;
 import org.aitesting.microservices.drivermanagement.models.HasDriverState;
 import org.aitesting.microservices.drivermanagement.repositories.DriverRepository;
 import org.aitesting.microservices.drivermanagement.repositories.DriverStateRepository;
@@ -30,7 +30,7 @@ public class CustomMessageListener {
 //        log.info("Received message as generic: {}", message.toString());
 //    }
 
-    @RabbitListener(queues = DriverManagementApplication.DRIVER_MANAGEMENT_QUEUE)
+    @RabbitListener(queues = DrivermanagementApplication.DRIVER_MANAGEMENT_QUEUE)
     public void receiveMessage(final CustomMessage customMessage) {
     	HasDriverState obj = new HasDriverState();
     	obj.setDriver(driverRepository.findByIddriver(customMessage.getIddriver()));

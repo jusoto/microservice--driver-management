@@ -1,4 +1,5 @@
 # Driver Management Micro Service
+![alt text](https://travis-ci.org/AITestingOrg/drivermanagement.svg?branch=master "Build Status")
 
 This Micro Service takes care of the information of the drivers.
 

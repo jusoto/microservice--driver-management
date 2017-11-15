@@ -1,6 +1,8 @@
-FROM frolvlad/alpine-oraclejdk8:slim
-VOLUME /tmp
-ADD build/libs/drivermanagement-0.0.1-SNAPSHOT.jar app.jar
-ENV JAVA_OPTS=""
-EXPOSE 8084
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+FROM golang:1.8
+WORKDIR /go/src/github.com/AITestingOrg/microservice--driver-management
+COPY . .
+
+RUN go-wrapper download   # "go get -d -v ./..."
+RUN go-wrapper install    # "go install -v ./..."
+
+CMD ["go-wrapper", "run"] # ["microservice--driver-management"]
